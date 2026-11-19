@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Wardrobe — AI Outfit Recommendation System</title>
+  <meta name="description" content="Automated wardrobe cataloging with CLIP Vision-Language model, Pinterest style inspiration matching, and Qdrant vector search.">
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2226%22 font-size=%2226%22>👔</text></svg>">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-icon">👔</div>
+        <div class="brand-titles">
+          <h1>My Wardrobe <span class="badge-ai">AI STYLIST</span></h1>
+          <p>Vision-Language cataloging &amp; Pinterest-driven vector outfit matching</p>
+        </div>
+      </div>
+
+      <!-- KPI Ribbon -->
+      <div class="kpi-ribbon" id="kpiRibbon">
+        <div class="kpi-pill">
+          <span class="kpi-val" id="kpiTotal">0</span>
+          <span class="kpi-lbl">Total Items</span>
+        </div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-pill">
+          <span class="kpi-val" id="kpiTops">0</span>
+          <span class="kpi-lbl">Tops</span>
+        </div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-pill">
+          <span class="kpi-val" id="kpiBottoms">0</span>
+          <span class="kpi-lbl">Bottoms</span>
+        </div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-pill">
+          <span class="kpi-val" id="kpiOuterwear">0</span>
+          <span class="kpi-lbl">Outerwear</span>
+        </div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-pill">
+          <span class="kpi-val" id="kpiFootwear">0</span>
+          <span class="kpi-lbl">Shoes</span>
+        </div>
+      </div>
+
+      <!-- Header Action Buttons -->
+      <div class="header-actions">
+        <button class="btn btn-secondary btn-sm" id="btnOpenSettings" title="Configure Pinterest API">
+          ⚙️ Settings
+        </button>
+        <button class="btn btn-secondary btn-sm" id="btnSeedSample" title="Load curated starter closet">
+          🔄 Reset / Seed
+        </button>
+        <button class="btn btn-primary" id="btnOpenUploadModal">
+          <span>+</span> Add Clothes
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" role="tablist">
+      <button class="nav-tab-btn active" id="tabBtnCloset" data-tab="tabCloset">
+        <span>🧥</span> Wardrobe Closet <span class="nav-tab-badge" id="badgeClosetCount">0</span>
+      </button>
+      <button class="nav-tab-btn" id="tabBtnStudio" data-tab="tabStudio">
+        <span>✨</span> AI Outfit Matcher
+      </button>
+      <button class="nav-tab-btn" id="tabBtnLookbook" data-tab="tabLookbook">
+        <span>📅</span> Occasion Lookbook
+      </button>
+      <button class="nav-tab-btn" id="tabBtnPinterest" data-tab="tabPinterest">
+        <span>📌</span> Pinterest Inspirations
+      </button>
+    </nav>
+
+    <!-- TAB 1: Wardrobe Closet View -->
+    <main class="tab-panel active" id="tabCloset">
+      <div class="toolbar-section">
+        <div class="filter-group" id="categoryFilters">
+          <button class="filter-pill active" data-category="all">All Items</button>
+          <button class="filter-pill" data-category="top">Tops</button>
+          <button class="filter-pill" data-category="bottom">Bottoms</button>
+          <button class="filter-pill" data-category="outerwear">Outerwear</button>
+          <button class="filter-pill" data-category="footwear">Footwear</button>
+          <button class="filter-pill" data-category="one_piece">Dresses</button>
+        </div>
+
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search by color, tag, item..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Grid of Items -->
+      <div class="wardrobe-grid" id="wardrobeGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </main>
+
+    <!-- TAB 2: AI Outfit Studio & Pinterest Inspiration -->
+    <section class="tab-panel" id="tabStudio">
+      <div class="studio-layout">
+
+        <!-- Sidebar: Choose item or filter -->
+        <aside class="studio-sidebar">
+          <h2 class="sidebar-title">🎯 Style Anchor</h2>
+          
+          <div class="form-group">
+            <label class="form-label" for="selectAnchorItem">Choose an item to style:</label>
+            <select class="form-select" id="selectAnchorItem">
+              <option value="">-- Select an item from your closet --</option>
+            </select>
+          </div>
+
+          <!-- Anchor Item Preview Card -->
+          <div class="anchor-preview" id="anchorPreviewCard" style="display: none;">
+            <img src="" id="anchorThumb" alt="Selected item" class="anchor-thumb">
+            <div class="anchor-info">
+              <h4 id="anchorName">Selected Item</h4>
+              <p id="anchorTags">Color • Garment</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="selectStudioOccasion">Target Occasion:</label>
+            <select class="form-select" id="selectStudioOccasion">
+              <option value="casual">Casual Everyday</option>
+              <option value="work">Office / Work</option>
+              <option value="formal">Formal Event</option>
+              <option value="streetwear">Streetwear</option>
+              <option value="date_night">Date Night</option>
+              <option value="party">Party &amp; Nightlife</option>
+              <option value="athletic">Sporty / Athletic</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="selectStudioGender">Style Aesthetic / Gender:</label>
+            <select class="form-select" id="selectStudioGender">
+              <option value="men">Men's Fashion</option>
+              <option value="women">Women's Fashion</option>
+              <option value="unisex">Unisex / Neutral</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary" id="btnGenerateRecommendations" style="width: 100%; justify-content: center;">
+            ⚡ Match with Pinterest Looks
+          </button>
+        </aside>
+
+        <!-- Main Studio Area -->
+        <div class="studio-main">
+          <div class="pinterest-search-indicator" id="pinterestQueryIndicator">
+            <span>🔍 Querying Pinterest for style inspiration:</span>
+            <span class="pinterest-query-tag" id="currentPinterestQuery">Select an item to begin matching</span>
+          </div>
+
+          <!-- Recommendations container -->
+          <div id="recommendationsContainer" style="display: flex; flex-direction: column; gap: 24px;">
+            <div class="empty-state">
+              <div class="empty-icon">✨</div>
+              <h3>Select a piece from your wardrobe</h3>
+              <p>Pick any item (like your Navy Blue T-Shirt or Beige Chinos) to find Pinterest outfits and match complementary pieces from your own closet.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: Occasion Lookbook -->
+    <section class="tab-panel" id="tabLookbook">
+      <div class="lookbook-header">
+        <h2>Occasion-Based Lookbook</h2>
+        <p>Curated complete outfits synthesized from your wardrobe for any context.</p>
+      </div>
+
+      <div class="filter-group" id="lookbookOccasionFilters" style="margin-bottom: 24px;">
+        <button class="filter-pill active" data-occ="casual">Casual</button>
+        <button class="filter-pill" data-occ="work">Work &amp; Business</button>
+        <button class="filter-pill" data-occ="formal">Formal</button>
+        <button class="filter-pill" data-occ="date_night">Date Night</button>
+        <button class="filter-pill" data-occ="streetwear">Streetwear</button>
+      </div>
+
+      <div id="lookbookContainer" style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- TAB 4: Pinterest Trend Moodboard -->
+    <section class="tab-panel" id="tabPinterest">
+      <div class="lookbook-header">
+        <h2>Pinterest Inspiration Moodboard</h2>
+        <p>Explore trendsetting street-style &amp; editorial outfit compositions decomposed by pieces.</p>
+      </div>
+      <div class="wardrobe-grid" id="pinterestMoodboardGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+  </div>
+
+  <!-- =========================================================================
+       MODAL 1: Upload & Auto-Tag Modal
+       ========================================================================= -->
+  <div class="modal-overlay" id="uploadModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>✨ Add Clothing with AI Auto-Tagging</h3>
+        <button class="modal-close-btn" id="btnCloseUploadModal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Dropzone -->
+        <div class="dropzone" id="uploadDropzone">
+          <input type="file" id="clothingFileInput" accept="image/*" style="display: none;">
+          <div class="dropzone-icon">📷</div>
+          <h4>Drop clothing photo here or click to browse</h4>
+          <p style="font-size: 13px; color: var(--text-dim);">Supports JPG, PNG, WEBP (Clear flat-lay or hanger photo works best)</p>
+        </div>
+
+        <!-- Scanning Indicator -->
+        <div class="scanning-spinner" id="scanningIndicator" style="display: none;">
+          <div class="spinner"></div>
+          <span>Analyzing garment using CLIP Vision-Language Model...</span>
+        </div>
+
+        <!-- AI Proposed Labels & Edit Fields -->
+        <div id="tagProposalSection" style="display: none; display: flex; flex-direction: column; gap: 16px;">
+          
+          <div class="proposal-box">
+            <div class="proposal-banner">
+              <span>🤖 Vision-Language Classification Result</span>
+              <span id="proposalConfidence" style="font-size: 12px; color: var(--accent-emerald);">98% confidence</span>
+            </div>
+            <div class="chips-container" id="proposedChipsContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label" for="inputItemName">Garment Name:</label>
+              <input type="text" class="form-input" id="inputItemName" placeholder="e.g. Navy Blue Cotton Tee">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="selectItemCategory">Category:</label>
+              <select class="form-select" id="selectItemCategory">
+                <option value="top">Top</option>
+                <option value="bottom">Bottom</option>
+                <option value="outerwear">Outerwear</option>
+                <option value="footwear">Footwear</option>
+                <option value="one_piece">Dress / One Piece</option>
+                <option value="accessory">Accessory</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label" for="inputItemColor">Color:</label>
+              <input type="text" class="form-input" id="inputItemColor" placeholder="e.g. Navy Blue">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="inputItemStyle">Style:</label>
+              <input type="text" class="form-input" id="inputItemStyle" placeholder="e.g. Minimalist">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Occasions (select all that apply):</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;" id="occasionCheckboxes">
+              <label><input type="checkbox" value="casual" checked> Casual</label>
+              <label><input type="checkbox" value="work"> Work</label>
+              <label><input type="checkbox" value="formal"> Formal</label>
+              <label><input type="checkbox" value="streetwear"> Streetwear</label>
+              <label><input type="checkbox" value="date_night"> Date Night</label>
+              <label><input type="checkbox" value="party"> Party</label>
+              <label><input type="checkbox" value="athletic"> Athletic</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inputCustomTags">Add Custom Tags (press Enter):</label>
+            <input type="text" class="form-input" id="inputCustomTags" placeholder="e.g. oversized, organic cotton, summer">
+            <div class="chips-container" id="customChipsContainer" style="margin-top: 6px;"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnCancelUpload">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmSaveItem" disabled>
+          💾 Save &amp; Index to Qdrant
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: Settings Modal (Pinterest API)
+       ========================================================================= -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3>⚙️ System Settings &amp; Pinterest API</h3>
+        <button class="modal-close-btn" id="btnCloseSettingsModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-muted);">
+          My Wardrobe runs with hybrid style intelligence: a built-in curated Pinterest trend repository, or direct queries to your live Pinterest developer account.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label" for="inputPinterestToken">Pinterest API Access Token (Optional):</label>
+          <input type="password" class="form-input" id="inputPinterestToken" placeholder="pina_...">
+          <span style="font-size: 11px; color: var(--text-dim);">Leave empty to use built-in inspiration catalog.</span>
+        </div>
+
+        <div style="padding: 12px; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 12px;">
+          <p><strong>Vector Search:</strong> Qdrant Local File Storage (512-dim cosine metric)</p>
+          <p><strong>Vision Model:</strong> OpenCLIP ViT-B-32 (Zero-shot visual encoder)</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnCloseSettings">Close</button>
+        <button class="btn btn-primary" id="btnSaveSettings">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

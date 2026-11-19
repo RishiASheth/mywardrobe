@@ -1,0 +1,225 @@
+[
+  {
+    "id": "item_white_sneakers_09",
+    "name": "Minimalist White Leather Low-Tops",
+    "category": "footwear",
+    "garment_type": "white minimalist sneakers",
+    "color": "white",
+    "style": "minimalist",
+    "occasions": [
+      "casual",
+      "streetwear",
+      "date_night"
+    ],
+    "tags": [
+      "white minimalist sneakers",
+      "white",
+      "sneakers",
+      "leather"
+    ],
+    "image_url": "/static/uploads/item_white_sneakers_09.jpg",
+    "created_at": "2026-10-12T10:40:00Z",
+    "notes": "Full-grain calfskin with margom rubber soles."
+  },
+  {
+    "id": "item_charcoal_trousers_06",
+    "name": "Tailored Charcoal Pleated Trousers",
+    "category": "bottom",
+    "garment_type": "tailored trousers",
+    "color": "charcoal",
+    "style": "formal",
+    "occasions": [
+      "work",
+      "formal"
+    ],
+    "tags": [
+      "charcoal",
+      "tailored trousers",
+      "formal",
+      "office",
+      "wool blend"
+    ],
+    "image_url": "/static/uploads/item_charcoal_trousers_06.jpg",
+    "created_at": "2026-10-12T10:25:00Z",
+    "notes": "Crisp pressed crease with waistband adjusters."
+  },
+  {
+    "id": "item_dark_jeans_05",
+    "name": "Straight Cut Raw Indigo Jeans",
+    "category": "bottom",
+    "garment_type": "blue jeans",
+    "color": "blue",
+    "style": "casual",
+    "occasions": [
+      "casual",
+      "streetwear",
+      "date_night"
+    ],
+    "tags": [
+      "blue jeans",
+      "denim",
+      "casual",
+      "raw indigo"
+    ],
+    "image_url": "/static/uploads/item_dark_jeans_05.jpg",
+    "created_at": "2026-10-12T10:20:00Z",
+    "notes": "Selvedge denim, timeless silhouette."
+  },
+  {
+    "id": "item_navy_tee_01",
+    "name": "Navy Blue Classic Crewneck T-Shirt",
+    "category": "top",
+    "garment_type": "t-shirt",
+    "color": "navy blue",
+    "style": "minimalist",
+    "occasions": [
+      "casual",
+      "date_night",
+      "streetwear"
+    ],
+    "tags": [
+      "navy blue",
+      "t-shirt",
+      "minimalist",
+      "casual",
+      "summer essential"
+    ],
+    "image_url": "/static/uploads/item_navy_tee_01.jpg",
+    "created_at": "2026-10-12T10:00:00Z",
+    "notes": "100% heavyweight combed cotton. Perfect base layer."
+  },
+  {
+    "id": "item_navy_blazer_07",
+    "name": "Unstructured Navy Wool Blazer",
+    "category": "outerwear",
+    "garment_type": "tailored blazer",
+    "color": "navy blue",
+    "style": "smart casual",
+    "occasions": [
+      "work",
+      "formal",
+      "date_night"
+    ],
+    "tags": [
+      "navy blue",
+      "tailored blazer",
+      "outerwear",
+      "smart casual"
+    ],
+    "image_url": "/static/uploads/item_navy_blazer_07.jpg",
+    "created_at": "2026-10-12T10:30:00Z",
+    "notes": "Patch pockets, Italian hopsack wool."
+  },
+  {
+    "id": "item_black_hoodie_03",
+    "name": "Heavyweight Noir Drop-Shoulder Hoodie",
+    "category": "top",
+    "garment_type": "hoodie",
+    "color": "black",
+    "style": "streetwear",
+    "occasions": [
+      "streetwear",
+      "casual",
+      "athletic"
+    ],
+    "tags": [
+      "black",
+      "hoodie",
+      "streetwear",
+      "cozy",
+      "relaxed fit"
+    ],
+    "image_url": "/static/uploads/item_black_hoodie_03.jpg",
+    "created_at": "2026-10-12T10:10:00Z",
+    "notes": "450 GSM french terry cotton."
+  },
+  {
+    "id": "item_khaki_chinos_04",
+    "name": "Pleated Tapered Beige Chinos",
+    "category": "bottom",
+    "garment_type": "chinos",
+    "color": "beige",
+    "style": "smart casual",
+    "occasions": [
+      "casual",
+      "work",
+      "date_night"
+    ],
+    "tags": [
+      "beige",
+      "chinos",
+      "smart casual",
+      "versatile",
+      "tapered"
+    ],
+    "image_url": "/static/uploads/item_khaki_chinos_04.jpg",
+    "created_at": "2026-10-12T10:15:00Z",
+    "notes": "Stretch cotton twill with relaxed thigh taper."
+  },
+  {
+    "id": "item_denim_jacket_08",
+    "name": "Medium Wash Trucker Denim Jacket",
+    "category": "outerwear",
+    "garment_type": "denim jacket",
+    "color": "blue",
+    "style": "casual",
+    "occasions": [
+      "casual",
+      "streetwear"
+    ],
+    "tags": [
+      "denim jacket",
+      "blue",
+      "casual",
+      "vintage wash"
+    ],
+    "image_url": "/static/uploads/item_denim_jacket_08.jpg",
+    "created_at": "2026-10-12T10:35:00Z",
+    "notes": "Heritage rivet buttons, classic trucker cut."
+  },
+  {
+    "id": "item_white_shirt_02",
+    "name": "Crisp White Oxford Button-Down",
+    "category": "top",
+    "garment_type": "formal dress shirt",
+    "color": "white",
+    "style": "smart casual",
+    "occasions": [
+      "work",
+      "formal",
+      "date_night"
+    ],
+    "tags": [
+      "white",
+      "formal dress shirt",
+      "smart casual",
+      "work",
+      "tailored"
+    ],
+    "image_url": "/static/uploads/item_white_shirt_02.jpg",
+    "created_at": "2026-10-12T10:05:00Z",
+    "notes": "Classic collar, breathable twill."
+  },
+  {
+    "id": "item_brown_loafers_10",
+    "name": "Burnished Dark Brown Penny Loafers",
+    "category": "footwear",
+    "garment_type": "leather loafers",
+    "color": "brown",
+    "style": "smart casual",
+    "occasions": [
+      "work",
+      "formal",
+      "date_night"
+    ],
+    "tags": [
+      "leather loafers",
+      "brown",
+      "formal",
+      "dress shoes"
+    ],
+    "image_url": "/static/uploads/item_brown_loafers_10.jpg",
+    "created_at": "2026-10-12T10:45:00Z",
+    "notes": "Hand-painted patina with Goodyear welting."
+  }
+]

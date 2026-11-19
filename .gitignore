@@ -1,0 +1,33 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python bytecode and test/type-checker caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build/package output
+build/
+dist/
+*.egg-info/
+
+# Local secrets and environment configuration
+.env
+.env.*
+!.env.example
+
+# Local Qdrant database files
+/qdrant_storage/
+
+# User-uploaded images (keep the curated item_*.jpg starter images)
+/static/uploads/upload_*
+
+# OS/editor-generated files
+.DS_Store
+Thumbs.db
